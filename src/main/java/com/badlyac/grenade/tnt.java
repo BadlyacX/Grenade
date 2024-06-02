@@ -17,16 +17,18 @@ public class tnt implements Listener {
         if ((player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE || player.getGameMode() == GameMode.CREATIVE) &&
                 (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) &&
                 player.getInventory().getItemInMainHand().getType() == Material.TNT) {
-            Projectiles.launchTNT(player);
-            if (player.getGameMode() != GameMode.CREATIVE) {
-                ItemStack tnt = player.getInventory().getItemInMainHand();
-                if (tnt.getAmount() == 1) {
-                    player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                } else {
-                    tnt.setAmount(tnt.getAmount() - 1);
+            if (player.isSneaking()) {
+                Projectiles.launchTNT(player);
+                if (player.getGameMode() != GameMode.CREATIVE) {
+                    ItemStack tnt = player.getInventory().getItemInMainHand();
+                    if (tnt.getAmount() == 1) {
+                        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                    } else {
+                        tnt.setAmount(tnt.getAmount() - 1);
+                    }
                 }
+                event.setCancelled(true);
             }
-            event.setCancelled(true);
         }
     }
 }
